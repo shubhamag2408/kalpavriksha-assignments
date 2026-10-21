@@ -15,7 +15,7 @@ struct Employee employees[MAX_EMPLOYEES];
 int employeeCount = 0;
 
 
-/* Find employee by ID */
+
 int findEmployee(int id)
 {
     for (int i = 0; i < employeeCount; i++)
@@ -30,7 +30,7 @@ int findEmployee(int id)
 }
 
 
-/* Display hierarchy recursively */
+
 void displayHierarchy(int managerId, int level)
 {
     for (int i = 0; i < employeeCount; i++)
@@ -53,7 +53,6 @@ void displayHierarchy(int managerId, int level)
 }
 
 
-/* Count all employees under a manager recursively */
 int countReports(int managerId)
 {
     int count = 0;
@@ -71,7 +70,7 @@ int countReports(int managerId)
 }
 
 
-/* Add employee */
+
 void addEmployee()
 {
     int id;
@@ -102,7 +101,7 @@ void addEmployee()
     printf("Enter Reporting Manager ID (0 for top-level employee): ");
     scanf("%d", &managerId);
 
-    /* Check whether manager exists */
+  
     if (managerId != 0 && findEmployee(managerId) == -1)
     {
         printf("Reporting manager does not exist.\n");
@@ -118,7 +117,7 @@ void addEmployee()
 }
 
 
-/* Remove employee */
+
 void removeEmployee()
 {
     int id;
@@ -128,7 +127,7 @@ void removeEmployee()
 
     int index = findEmployee(id);
 
-    /* Employee does not exist */
+    
     if (index == -1)
     {
         printf("Employee not found.\n");
@@ -137,30 +136,25 @@ void removeEmployee()
 
     int managerId = employees[index].managerId;
 
-    /* CEO cannot be removed */
     if (managerId == 0)
     {
         printf("CEO cannot be removed.\n");
         return;
     }
 
-    /*
-       Find the sibling having the fewest
-       direct reports.
-    */
+
     int newManagerId = managerId;
     int minReports = MAX_EMPLOYEES + 1;
     int foundSibling = 0;
 
     for (int i = 0; i < employeeCount; i++)
     {
-        /* Employee must have same manager = sibling */
         if (employees[i].managerId == managerId &&
             employees[i].id != id)
         {
             int directReports = 0;
 
-            /* Count direct reports of this sibling */
+         
             for (int j = 0; j < employeeCount; j++)
             {
                 if (employees[j].managerId == employees[i].id)
@@ -169,7 +163,7 @@ void removeEmployee()
                 }
             }
 
-            /* Find sibling with minimum direct reports */
+            
             if (directReports < minReports)
             {
                 minReports = directReports;
@@ -179,12 +173,7 @@ void removeEmployee()
         }
     }
 
-    /*
-       If no sibling exists,
-       newManagerId remains managerId.
-    */
-
-    /* Transfer direct reports */
+   
     for (int i = 0; i < employeeCount; i++)
     {
         if (employees[i].managerId == id)
@@ -193,7 +182,6 @@ void removeEmployee()
         }
     }
 
-    /* Remove employee from array */
     for (int i = index; i < employeeCount - 1; i++)
     {
         employees[i] = employees[i + 1];
@@ -205,7 +193,6 @@ void removeEmployee()
 }
 
 
-/* Display hierarchy of one employee */
 void displayEmployeeHierarchy()
 {
     int id;
@@ -234,14 +221,13 @@ void displayEmployeeHierarchy()
 }
 
 
-/* Display complete organization hierarchy */
+
 void displayCompleteHierarchy()
 {
     printf("\n====== ORGANIZATION HIERARCHY ======\n");
 
     for (int i = 0; i < employeeCount; i++)
     {
-        /* Top-level employee */
         if (employees[i].managerId == 0)
         {
             printf("\n%d - %s - %s\n",
@@ -257,7 +243,7 @@ void displayCompleteHierarchy()
 }
 
 
-/* Main function */
+
 int main()
 {
     int choice;
