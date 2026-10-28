@@ -53,6 +53,7 @@ void displayHierarchy(int managerId, int level)
 }
 
 
+
 int countReports(int managerId)
 {
     int count = 0;
@@ -85,37 +86,38 @@ void addEmployee()
     printf("Enter Employee ID: ");
     scanf("%d", &id);
 
-    /* Check for duplicate ID */
+   
     if (findEmployee(id) != -1)
     {
         printf("Employee ID already exists.\n");
         return;
     }
 
+    struct Employee *employee = &employees[employeeCount];
+
     printf("Enter Name: ");
-    scanf("%s", employees[employeeCount].name);
+    scanf("%49s", employee->name);
 
     printf("Enter Designation: ");
-    scanf("%s", employees[employeeCount].designation);
+    scanf("%49s", employee->designation);
 
     printf("Enter Reporting Manager ID (0 for top-level employee): ");
     scanf("%d", &managerId);
 
-  
     if (managerId != 0 && findEmployee(managerId) == -1)
     {
         printf("Reporting manager does not exist.\n");
         return;
     }
 
-    employees[employeeCount].id = id;
-    employees[employeeCount].managerId = managerId;
+    
+    employee->id = id;
+    employee->managerId = managerId;
 
     employeeCount++;
 
     printf("Employee added successfully.\n");
 }
-
 
 
 void removeEmployee()
@@ -127,14 +129,17 @@ void removeEmployee()
 
     int index = findEmployee(id);
 
-    
+  
     if (index == -1)
     {
         printf("Employee not found.\n");
         return;
     }
 
-    int managerId = employees[index].managerId;
+   
+    struct Employee *employee = &employees[index];
+
+    int managerId = employee->managerId;
 
     if (managerId == 0)
     {
@@ -142,19 +147,18 @@ void removeEmployee()
         return;
     }
 
-
+ 
     int newManagerId = managerId;
     int minReports = MAX_EMPLOYEES + 1;
-    int foundSibling = 0;
 
     for (int i = 0; i < employeeCount; i++)
     {
+      
         if (employees[i].managerId == managerId &&
             employees[i].id != id)
         {
             int directReports = 0;
 
-         
             for (int j = 0; j < employeeCount; j++)
             {
                 if (employees[j].managerId == employees[i].id)
@@ -163,17 +167,16 @@ void removeEmployee()
                 }
             }
 
-            
+           
             if (directReports < minReports)
             {
                 minReports = directReports;
                 newManagerId = employees[i].id;
-                foundSibling = 1;
             }
         }
     }
 
-   
+ 
     for (int i = 0; i < employeeCount; i++)
     {
         if (employees[i].managerId == id)
@@ -193,6 +196,7 @@ void removeEmployee()
 }
 
 
+
 void displayEmployeeHierarchy()
 {
     int id;
@@ -208,18 +212,20 @@ void displayEmployeeHierarchy()
         return;
     }
 
-    printf("\n%d - %s - %s\n",
-           employees[index].id,
-           employees[index].name,
-           employees[index].designation);
+   
+    struct Employee *employee = &employees[index];
 
-    displayHierarchy(id, 1);
+    printf("\n%d - %s - %s\n",
+           employee->id,
+           employee->name,
+           employee->designation);
+
+    displayHierarchy(employee->id, 1);
 
     printf("\nTotal Employees Under %d: %d\n",
-           id,
-           countReports(id));
+           employee->id,
+           countReports(employee->id));
 }
-
 
 
 void displayCompleteHierarchy()
@@ -228,6 +234,7 @@ void displayCompleteHierarchy()
 
     for (int i = 0; i < employeeCount; i++)
     {
+        
         if (employees[i].managerId == 0)
         {
             printf("\n%d - %s - %s\n",
