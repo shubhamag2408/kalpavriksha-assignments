@@ -2,14 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* Rename the header's counters while including it to avoid name conflicts. */
 #define playerCount headerPlayerCount
 #define teamCount headerTeamCount
 #include "Players_data.h"
 #undef playerCount
 #undef teamCount
 
-/* Independent player structure required by the assignment. */
 typedef struct
 {
     int playerId;
@@ -47,7 +45,7 @@ typedef struct PlayerNode
 } PlayerNode;
 
 
-/* Sorted linked list per team and role: Batsman, Bowler, All-rounder. */
+
 PlayerNode *rolePlayerLists[MAX_TEAMS][3] = {NULL};
 
 typedef struct
@@ -74,7 +72,7 @@ HeapNode heapRemove(void);
 void updateTeamAverageStrikeRate(int teamIndex);
 void displayMenu(void);
 
-/* Performance index formula based on role. */
+
 float calculatePerformanceIndex(ODIPlayer p)
 {
     if (strcmp(p.role, "Batsman") == 0)
@@ -96,7 +94,6 @@ int getRoleIndex(const char role[])
 }
 
 
-/* Insert a player into the team's role list in descending Performance Index. */
 void insertPlayerSorted(int teamIndex, ODIPlayer player)
 {
     int roleIndex = getRoleIndex(player.role);
@@ -293,7 +290,7 @@ void displayPlayersOfTeam(void)
     printf("%-6s %-25s %-15s %-10s %-10s %-10s %-8s %-8s %-12s\n",
            "ID", "Name", "Role", "Runs", "Avg", "SR", "Wkts", "ER", "Perf.Index");
     printf("-------------------------------------------------------------------------------------------------------------\n");
-git status    for (int i = 0; i < playerCount; i++)
+  for (int i = 0; i < playerCount; i++)
     {
         if (strcmp(playerList[i].teamName, teamList[teamIndex].name) == 0)
         {
